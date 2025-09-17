@@ -1,0 +1,37 @@
+[project]
+name = "jargis"
+version = "0.1.0"
+description = "RAG PoC: 자기소개서 지식베이스"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.8",
+  "pydantic-settings>=2.4",
+  "SQLAlchemy>=2.0",
+  "psycopg2-binary>=2.9",
+  "python-dotenv>=1.0",
+  "httpx>=0.27",
+  "streamlit>=1.38",
+  "requests>=2.32",
+  "openai>=1.50",
+]
+
+# ✅ 콘솔 스크립트는 모듈:함수 형태로
+[project.scripts]
+api = "app.cli:api"
+db  = "app.cli:db"
+ui  = "app.cli:ui"
+
+# ✅ 빌드 백엔드와 패키지 탐색을 명시해 app/, ui/ 둘 다 포함
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app", "ui"]   # 또는 아래 find 방식 중 택1
+
+# (대안) find 방식을 쓰고 싶으면 위 [tool.setuptools] 대신 이 블록 사용
+# [tool.setuptools.packages.find]
+# where = ["."]
+# include = ["app*", "ui*"]
