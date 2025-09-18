@@ -56,3 +56,25 @@ def draft(question_id: int, top_k: int = 3):
     r = requests.post(f"{API_BASE}/draft", json=payload, timeout=60)
     r.raise_for_status()
     return r.json()
+
+
+def preview_md(file_path: str, hint_company=None, hint_job=None, hint_year=None):
+    files = {"file": open(file_path, "rb")}
+    data = {}
+    if hint_company:
+        data["hint_company"] = hint_company
+    if hint_job:
+        data["hint_job"] = hint_job
+    if hint_year:
+        data["hint_year"] = str(hint_year)
+    r = requests.post(
+        f"{API_BASE}/upload-md/preview", files=files, data=data, timeout=60
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def commit_md(payload: dict):
+    r = requests.post(f"{API_BASE}/upload-md/commit", json=payload, timeout=120)
+    r.raise_for_status()
+    return r.json()
