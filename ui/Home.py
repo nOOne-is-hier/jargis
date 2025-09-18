@@ -20,7 +20,8 @@ with st.sidebar:
         except Exception as e:
             st.error(f"API error: {e}")
 
-tabs = st.tabs(["🔼 업로드", "🔎 검색/추천", "📝 초안 생성"])
+tabs = st.tabs(["🔼 업로드", "🔎 검색/추천"])
+# tabs = st.tabs(["🔼 업로드", "🔎 검색/추천", "📝 초안 생성"])
 
 # ----------------------
 # 업로드 탭
@@ -122,36 +123,39 @@ with tabs[1]:
                 st.code(h["snippet"])
 
                 cols = st.columns([1, 1, 6])
+
                 with cols[0]:
-                    st.button(
-                        "초안 생성",
-                        key=f"draft_btn_{i}",
-                        on_click=lambda qid=h["question_id"]: st.session_state.update(
-                            {"_draft_target": qid}
-                        ),
-                    )
-                with cols[1]:
                     st.write(f"QID: {h['question_id']}")
+                # with cols[0]:
+                #     st.button(
+                #         "초안 생성",
+                #         key=f"draft_btn_{i}",
+                #         on_click=lambda qid=h["question_id"]: st.session_state.update(
+                #             {"_draft_target": qid}
+                #         ),
+                #     )
+                # with cols[1]:
+                #     st.write(f"QID: {h['question_id']}")
 
 # ----------------------
 # 초안 생성 탭
 # ----------------------
-with tabs[2]:
-    st.subheader("초안 생성")
-    target_qid = st.session_state.get("_draft_target")
-    if target_qid:
-        st.info(f"선택된 question_id = {target_qid}")
-    else:
-        st.caption("검색 탭에서 결과의 [초안 생성] 버튼을 눌러주세요.")
+# with tabs[2]:
+#     st.subheader("초안 생성")
+#     target_qid = st.session_state.get("_draft_target")
+#     if target_qid:
+#         st.info(f"선택된 question_id = {target_qid}")
+#     else:
+#         st.caption("검색 탭에서 결과의 [초안 생성] 버튼을 눌러주세요.")
 
-    top_k_for_draft = st.number_input(
-        "참조할 청크 수 (top_k)", min_value=1, max_value=10, value=1, step=1
-    )
-    if st.button("초안 만들기", disabled=not bool(target_qid)):
-        with st.spinner("초안 생성 중..."):
-            try:
-                res = draft(target_qid, top_k=int(top_k_for_draft))
-                st.text_area("자동 생성된 초안", value=res["draft"], height=220)
-                st.success(f"model: {res['model']}")
-            except Exception as e:
-                st.error(f"초안 생성 실패: {e}")
+#     top_k_for_draft = st.number_input(
+#         "참조할 청크 수 (top_k)", min_value=1, max_value=10, value=1, step=1
+#     )
+#     if st.button("초안 만들기", disabled=not bool(target_qid)):
+#         with st.spinner("초안 생성 중..."):
+#             try:
+#                 res = draft(target_qid, top_k=int(top_k_for_draft))
+#                 st.text_area("자동 생성된 초안", value=res["draft"], height=220)
+#                 st.success(f"model: {res['model']}")
+#             except Exception as e:
+#                 st.error(f"초안 생성 실패: {e}")
