@@ -1,3 +1,4 @@
+# ui/api_client.py
 import os
 import requests
 
@@ -10,15 +11,48 @@ def healthz():
     return r.json()
 
 
-def search(query, top_k=5, company=None, job=None, year_min=None, year_max=None):
+def upload(
+    content: str,
+    company: str | None,
+    job: str | None,
+    title: str | None,
+    year: int | None,
+):
+    payload = {
+        "content": content,
+        "company": company or None,
+        "job": job or None,
+        "title": title or None,
+        "year": year if year else None,
+    }
+    r = requests.post(f"{API_BASE}/upload", json=payload, timeout=60)
+    r.raise_for_status()
+    return r.json()
+
+
+def search(
+    query: str,
+    top_k: int = 5,
+    company: str | None = None,
+    job: str | None = None,
+    year_min: int | None = None,
+    year_max: int | None = None,
+):
     payload = {
         "query": query,
         "top_k": top_k,
-        "company": company,
-        "job": job,
+        "company": company or None,
+        "job": job or None,
         "year_min": year_min,
         "year_max": year_max,
     }
-    r = requests.post(f"{API_BASE}/search", json=payload, timeout=20)
+    r = requests.post(f"{API_BASE}/search", json=payload, timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+
+def draft(question_id: int, top_k: int = 3):
+    payload = {"question_id": question_id, "top_k": top_k}
+    r = requests.post(f"{API_BASE}/draft", json=payload, timeout=60)
     r.raise_for_status()
     return r.json()

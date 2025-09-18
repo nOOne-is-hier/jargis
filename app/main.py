@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .settings import settings
-from .routers import health, upload, search
+from .routers import health, upload, search, draft
 
 app = FastAPI(title="jargis API", version="0.1.0")
 
@@ -16,5 +16,6 @@ app.add_middleware(
 app.include_router(health.router, prefix="")
 app.include_router(upload.router, prefix="")
 app.include_router(search.router, prefix="")
+app.include_router(draft.router, prefix="")
 
 # TODO: upload/search/draft 라우터 추가 예정
