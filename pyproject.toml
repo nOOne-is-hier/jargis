@@ -15,6 +15,7 @@ dependencies = [
   "streamlit>=1.38",
   "requests>=2.32",
   "openai>=1.50",
+  "python-multipart>=0.0.20",
 ]
 
 # ✅ 콘솔 스크립트는 모듈:함수 형태로
